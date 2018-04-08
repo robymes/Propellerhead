@@ -8,4 +8,12 @@
     <PackageReference Include="Marten" Version="2.7.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Marten\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RobyMes.Propellerhead.Common\RobyMes.Propellerhead.Common.csproj" />
+  </ItemGroup>
+
 </Project>
