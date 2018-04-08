@@ -1,0 +1,74 @@
+{
+    "rules": {
+        "indent": "error",
+        "quotes": [
+            "error",
+            "double",
+            "avoid-escape"
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "vars-on-top": "error",
+        "one-var": [
+            "error",
+            "always"
+        ],
+        "no-unused-vars": [
+            "error", {
+                "vars": "all",
+                "args": "none"
+            }
+        ],
+        "no-plusplus": "error",
+        "no-console": "off",
+        "curly": "error",
+        "guard-for-in": "error",
+        "no-else-return": "error",
+        "no-eval": "error",
+        "radix": "error",
+        "no-new": "error",
+        "no-use-before-define": "error",
+        "new-parens": "error",
+        "no-multiple-empty-lines": [
+            "error", {
+                "max": 1
+            }
+        ],
+        "no-spaced-func": "error",
+        "space-before-function-paren": "error",
+        "no-trailing-spaces": "error",
+        "no-unneeded-ternary": "error",
+        "space-before-blocks": "error"
+    },
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "jQuery": true,
+        "Enumerable": true,
+        "moment": true,
+        "numeral": true,
+        "ko": true,
+        "_": true,
+        "require": true,
+        "define": true,
+        "jasmine": true,
+        "describe": true,
+        "beforeEach": true,
+        "it": true,
+        "expect": true,
+        "webapp": true,
+        "module": true,
+        "__dirname": true,
+        "dojo": true,
+        "Bacon": true
+    }
+}

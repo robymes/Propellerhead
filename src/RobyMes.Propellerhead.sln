@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobyMes.Propellerhead.Web", "RobyMes.Propellerhead.Web\RobyMes.Propellerhead.Web.csproj", "{41D67778-B40C-469A-8609-98EB552EFB7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobyMes.Propellerhead.Data", "RobyMes.Propellerhead.Data\RobyMes.Propellerhead.Data.csproj", "{06306226-7B57-4C84-A871-57D1CFA4B9AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7C98CD8-9C77-40C9-A47E-97E9E96BB315}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobyMes.Propellerhead.Tests", "RobyMes.Propellerhead.Tests\RobyMes.Propellerhead.Tests.csproj", "{B4D1FECE-48D0-415F-ACC0-0EDE79BE70A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobyMes.Propellerhead.Common", "RobyMes.Propellerhead.Common\RobyMes.Propellerhead.Common.csproj", "{F688E957-CBE5-4DD9-BD3C-33D8BCC82159}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41D67778-B40C-469A-8609-98EB552EFB7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41D67778-B40C-469A-8609-98EB552EFB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41D67778-B40C-469A-8609-98EB552EFB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41D67778-B40C-469A-8609-98EB552EFB7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06306226-7B57-4C84-A871-57D1CFA4B9AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06306226-7B57-4C84-A871-57D1CFA4B9AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06306226-7B57-4C84-A871-57D1CFA4B9AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06306226-7B57-4C84-A871-57D1CFA4B9AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D1FECE-48D0-415F-ACC0-0EDE79BE70A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D1FECE-48D0-415F-ACC0-0EDE79BE70A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D1FECE-48D0-415F-ACC0-0EDE79BE70A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D1FECE-48D0-415F-ACC0-0EDE79BE70A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F688E957-CBE5-4DD9-BD3C-33D8BCC82159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F688E957-CBE5-4DD9-BD3C-33D8BCC82159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F688E957-CBE5-4DD9-BD3C-33D8BCC82159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F688E957-CBE5-4DD9-BD3C-33D8BCC82159}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4D1FECE-48D0-415F-ACC0-0EDE79BE70A8} = {F7C98CD8-9C77-40C9-A47E-97E9E96BB315}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81618AFC-5536-4F71-906C-36E2BC20064E}
+	EndGlobalSection
+EndGlobal
