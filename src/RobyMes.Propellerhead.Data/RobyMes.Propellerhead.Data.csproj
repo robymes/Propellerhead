@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Marten\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RobyMes.Propellerhead.Common\RobyMes.Propellerhead.Common.csproj" />
   </ItemGroup>
 
