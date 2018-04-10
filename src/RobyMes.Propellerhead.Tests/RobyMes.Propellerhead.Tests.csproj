@@ -16,4 +16,10 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RobyMes.Propellerhead.Common\RobyMes.Propellerhead.Common.csproj" />
+    <ProjectReference Include="..\RobyMes.Propellerhead.Data\RobyMes.Propellerhead.Data.csproj" />
+    <ProjectReference Include="..\RobyMes.Propellerhead.Web\RobyMes.Propellerhead.Web.csproj" />
+  </ItemGroup>
+
 </Project>
