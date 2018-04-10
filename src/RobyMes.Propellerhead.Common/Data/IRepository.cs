@@ -12,6 +12,8 @@ namespace RobyMes.Propellerhead.Common.Data
 
         Task<IList<Customer>> GetCustomersOrderByCreationDate(CustomerListQueryParameters queryParameters, bool ascending);
 
+        Task<Customer> GetCustomerById(string id);
+
         Task CreateCustomer(string name, CustomerStatus status);
     }
 }

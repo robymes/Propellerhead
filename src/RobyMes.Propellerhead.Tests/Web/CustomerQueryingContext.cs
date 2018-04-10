@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace RobyMes.Propellerhead.Tests.Web
 {
-    public partial class CustomerList_feature : FeatureFixture
+    public sealed class CustomerQueryingContext : IDisposable
     {
         private const string CONNECTION_STRING = "host=localhost;database=event_store;password=robymes.ptt;username=postgres;";
         private IRepository repository;
         private IList<Customer> customerList;
 
-        private async Task Customer_repository_is_available()
+        public async Task Customer_repository_is_available()
         {
             var configurationProviderMock = new Mock<IConfigurationProvider>();
             configurationProviderMock.SetupProperty(cf => cf.DocumentStoreConnectionString, CONNECTION_STRING);
@@ -28,7 +28,7 @@ namespace RobyMes.Propellerhead.Tests.Web
             await Task.CompletedTask;
         }
 
-        private async Task Customers_are_created(IEnumerable<string> names)
+        public async Task Customers_are_created(IEnumerable<string> names)
         {
             foreach (var name in names)
             {
@@ -36,28 +36,38 @@ namespace RobyMes.Propellerhead.Tests.Web
             }            
         }
 
-        private async Task Customers_are_retrieved(CustomerListQueryParameters queryParameters)
+        public async Task Customers_are_retrieved(CustomerListQueryParameters queryParameters)
         {
             this.customerList = await this.repository.GetCustomers( queryParameters);           
         }
 
-        private async Task Customers_are_retrieved_ordered_by_name(CustomerListQueryParameters queryParameters, bool ascending)
+        public async Task Customers_are_retrieved_ordered_by_name(CustomerListQueryParameters queryParameters, bool ascending)
         {
             this.customerList = await this.repository.GetCustomersOrderByName(queryParameters, ascending);
         }
 
-        private async Task Customers_are_retrieved_ordered_by_creation_date(CustomerListQueryParameters queryParameters, bool ascending)
+        public async Task Customers_are_retrieved_ordered_by_creation_date(CustomerListQueryParameters queryParameters, bool ascending)
         {
             this.customerList = await this.repository.GetCustomersOrderByCreationDate(queryParameters, ascending);
         }
 
-        private async Task Customer_list_contains_items(int count)
+        public async Task Customer_are_retrieved_by_id(int customerIndex)
+        {
+            var customer = await this.repository.GetCustomerById(this.customerList[customerIndex].Id);
+            this.customerList = new List<Customer>();
+            if (customer != null)
+            {
+                this.customerList.Add(customer);
+            }
+        }
+
+        public async Task Customer_list_contains_items(int count)
         {
             this.customerList.Count.ShouldBe(count);
             await Task.CompletedTask;
         }
 
-        private async Task Customer_list_contains_items(string name, CustomerStatus status, int count)
+        public async Task Customer_list_contains_items(string name, CustomerStatus status, int count)
         {
             var customers =
                 this.customerList
@@ -67,11 +77,19 @@ namespace RobyMes.Propellerhead.Tests.Web
             await Task.CompletedTask;
         }
 
-        private async Task Customer_list_contains_item(int index, string name, CustomerStatus status)
+        public async Task Customer_list_contains_item(int index, string name, CustomerStatus status)
         {
             this.customerList[index].Name.ShouldBe(name);
             this.customerList[index].Status.ShouldBe(status.ToString());
             await Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            if (this.repository != null)
+            {
+                this.repository.Dispose();
+            }            
         }
     }
 }

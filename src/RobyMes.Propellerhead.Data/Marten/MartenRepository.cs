@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Marten;
-using Marten.Linq;
+﻿using Marten;
+using Marten.Util;
 using RobyMes.Propellerhead.Common.Configuration;
 using RobyMes.Propellerhead.Common.Data;
 using RobyMes.Propellerhead.Common.Data.Events;
 using RobyMes.Propellerhead.Common.Data.Projections;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RobyMes.Propellerhead.Data.Marten
 {
@@ -43,7 +42,7 @@ namespace RobyMes.Propellerhead.Data.Marten
             {
                 query =
                     query
-                    .Where(c => c.Name.ToLower().Contains(queryParameters.NameFilter.ToLower()) == true);
+                    .Where(c => c.Name.Contains(queryParameters.NameFilter, StringComparison.OrdinalIgnoreCase));
             }
             if (queryParameters.CreatioDateFilter != null)
             {
@@ -74,15 +73,8 @@ namespace RobyMes.Propellerhead.Data.Marten
 
         public async Task<IList<Customer>> GetCustomersOrderByName(CustomerListQueryParameters queryParameters, bool ascending)
         {
-            var query =
-                this.BuildFilters(this.session.Query<CustomerProjection>(), queryParameters)
-                .OrderBy(c => c.Name);
-            if (ascending == false)
-            {
-                query =
-                    this.session.Query<CustomerProjection>()
-                    .OrderByDescending(c => c.Name);
-            }
+            var query = this.BuildFilters(this.session.Query<CustomerProjection>(), queryParameters);
+            query = ascending == true ? query.OrderBy(c => c.Name) : query.OrderByDescending(c => c.Name);            
             var customers = await
                 query
                 .Skip(queryParameters.PageIndex * queryParameters.PageSize)
@@ -93,21 +85,25 @@ namespace RobyMes.Propellerhead.Data.Marten
 
         public async Task<IList<Customer>> GetCustomersOrderByCreationDate(CustomerListQueryParameters queryParameters, bool ascending)
         {
-            var query =
-                this.BuildFilters(this.session.Query<CustomerProjection>(), queryParameters)
-                .OrderBy(c => c.CreationDate);
-            if (ascending == false)
-            {
-                query =
-                    this.session.Query<CustomerProjection>()
-                    .OrderByDescending(c => c.CreationDate);
-            }
+            var query = this.BuildFilters(this.session.Query<CustomerProjection>(), queryParameters);
+            query = ascending == true ? query.OrderBy(c => c.CreationDate) : query.OrderByDescending(c => c.CreationDate);           
             var customers = await
                 query
                 .Skip(queryParameters.PageIndex * queryParameters.PageSize)
                 .Take(queryParameters.PageSize)
                 .ToListAsync();
             return this.GetCustomersFromProjection(customers);
+        }
+
+        public async Task<Customer> GetCustomerById(string id)
+        {
+            var customers = await
+                this.session.Query<CustomerProjection>()
+                .Where(c => c.CustomerId == id)                
+                .ToListAsync();
+            return 
+                this.GetCustomersFromProjection(customers)
+                .SingleOrDefault();
         }
 
         public async Task CreateCustomer(string name, CustomerStatus status)

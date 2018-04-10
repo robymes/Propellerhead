@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RobyMes.Propellerhead.Common.Data
 {
@@ -26,6 +27,17 @@ namespace RobyMes.Propellerhead.Common.Data
         {
             get;
             set;
+        }
+
+        public IList<string> Notes
+        {
+            get;
+            set;
+        }
+
+        public Customer()
+        {
+            this.Notes = new List<string>();
         }
     }
 }
