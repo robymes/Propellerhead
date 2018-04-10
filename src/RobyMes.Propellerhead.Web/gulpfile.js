@@ -21,14 +21,17 @@ var gulp = require("gulp"),
             "wwwroot/scripts/moment-with-locales.min.js",
             "wwwroot/scripts/Bacon.min.js"
         ],
-        src: [            
+        src: [
+            "scripts/Utils.js",
             "scripts/ApiService.js",
+            "scripts/ApplicationBus.js",
             "scripts/CustomerListViewModel.js",
-            "scripts/App.js"
+            "scripts/NewCustomerViewModel.js",
+            "scripts/IndexApp.js"
         ],
         testSrc: [
-            "scripts/ApiService.js",
-            "scripts/CustomerListViewModel.js"
+            "scripts/CustomerListViewModel.js",
+            "scripts/NewCustomerViewModel.js"
         ]
     };
 

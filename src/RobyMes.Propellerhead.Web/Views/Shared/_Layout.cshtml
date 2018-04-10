@@ -7,19 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Propellerhead Test</title>
-    <environment names="Development">
-        <link rel="stylesheet" href="~/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="~/css/bootstrap-datepicker3.min.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" 
-            asp-fallback-href="~/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap-theme.min.css" 
-            asp-fallback-href="~/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css" 
-            asp-fallback-href="~/css/bootstrap-datepicker3.min.css" />
-    </environment>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-datepicker3.min.css" />
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -38,8 +28,7 @@
     </nav>
     <div class="jumbotron">
         <div class="container">
-            <h1>Propellerhead</h1>
-            <p>Technical Test</p>
+            <h3>Technical Test</h3>
         </div>
     </div>
     <div class="container">
@@ -49,37 +38,16 @@
             <p>&copy; RobyMes 2018</p>
         </footer>
     </div>
-    <environment names="Development">
-        <script src="~/scripts/json2.js"></script>
-        <script src="~/scripts/jquery.min.js"></script>
-        <script src="~/scripts/linq.min.js"></script>
-        <script src="~/scripts/bootstrap.min.js"></script>
-        <script src="~/scripts/bootstrap-datepicker.min.js"></script>
-        <script src="~/scripts/bootstrap-datepicker.it.min.js"></script>
-        <script src="~/scripts/knockout.js"></script>
-        <script src="~/scripts/moment-with-locales.min.js"></script>
-        <script src="~/scripts/Bacon.min.js"></script>
-        <script src="~/scripts/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/scripts/json2.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" 
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/scripts/linq.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" 
-            asp-fallback-src="~/scripts/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js" 
-            asp-fallback-src="~/scripts/bootstrap-datepicker.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.it.min.js" 
-            asp-fallback-src="~/scripts/bootstrap-datepicker.it.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js" 
-            asp-fallback-src="~/scripts/knockout.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment-with-locales.min.js" 
-            asp-fallback-src="~/scripts/moment-with-locales.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.89/Bacon.min.js" 
-            asp-fallback-src="~/scripts/Bacon.min.js"></script>
-        <script src="~/scripts/site.min.js" asp-append-version="true"></script>
-    </environment>
-    @RenderSection("scripts", required: false)
+    <script src="~/scripts/json2.js"></script>
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/linq.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <script src="~/scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/scripts/bootstrap-datepicker.it.min.js"></script>
+    <script src="~/scripts/knockout.js"></script>
+    <script src="~/scripts/moment-with-locales.min.js"></script>
+    <script src="~/scripts/Bacon.min.js"></script>
+    <script src="~/scripts/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
