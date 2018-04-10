@@ -8,7 +8,6 @@ var gulp = require("gulp"),
     bowerMain = require("bower-main"),
     bowerMainJavaScriptFiles = bowerMain("js", "min.js"),
     bowerMainCssFiles = bowerMain("css", "min.css"),
-    dotnet = require("gulp-dotnet"),
     paths = {
         eslintrc: [
             ".eslintrc.json"
@@ -22,10 +21,14 @@ var gulp = require("gulp"),
             "wwwroot/scripts/moment-with-locales.min.js",
             "wwwroot/scripts/Bacon.min.js"
         ],
-        src: [
+        src: [            
+            "scripts/ApiService.js",
+            "scripts/CustomerListViewModel.js",
             "scripts/App.js"
         ],
         testSrc: [
+            "scripts/ApiService.js",
+            "scripts/CustomerListViewModel.js"
         ]
     };
 
@@ -78,7 +81,7 @@ gulp.task("src:lint", function () {
 });
 
 gulp.task("src:cleanTestsDebug", ["src:lint"], function (callback) {
-    return gulp.src("tests/debug", {
+    return gulp.src("scripts/tests/debug", {
         read: false
     })
     .pipe(clean());
@@ -86,13 +89,13 @@ gulp.task("src:cleanTestsDebug", ["src:lint"], function (callback) {
 
 gulp.task("src:prepareTestsSrcDebug", ["src:cleanTestsDebug"], function () {
     return gulp.src(paths.testSrc)
-        .pipe(gulp.dest("tests/debug/src"));
+        .pipe(gulp.dest("scripts/tests/debug/src"));
 });
 
 gulp.task("src:prepareTestsLibDebug", ["src:prepareTestsSrcDebug"], function () {
     return gulp.src(paths.lib)
         .pipe(concat("lib.js"))
-        .pipe(gulp.dest("tests/debug/lib"));
+        .pipe(gulp.dest("scripts/tests/debug/lib"));
 });
 
 gulp.task("src:testsDebug", ["src:prepareTestsLibDebug"], function (callback) {
@@ -110,7 +113,7 @@ gulp.task("src:buildDebug", ["src:testsDebug"], function () {
 });
 
 gulp.task("src:cleanTestsRelease", ["src:lint"], function (callback) {
-    return gulp.src("tests/release", {read: false})
+    return gulp.src("scripts/tests/release", {read: false})
         .pipe(clean());
 });
 
@@ -118,13 +121,13 @@ gulp.task("src:prepareTestsSrcRelease", ["src:cleanTestsRelease"], function () {
     return gulp.src(paths.testSrc)
         .pipe(uglify())
         .pipe(concat("site.min.js"))
-        .pipe(gulp.dest("tests/release/src"));
+        .pipe(gulp.dest("scripts/tests/release/src"));
 });
 
 gulp.task("src:prepareTestsLibRelease", ["src:prepareTestsSrcRelease"], function () {
     return gulp.src(paths.lib)
         .pipe(concat("lib.js"))
-        .pipe(gulp.dest("tests/release/lib"));
+        .pipe(gulp.dest("scripts/tests/release/lib"));
 });
 
 gulp.task("src:testsRelease", ["src:prepareTestsLibRelease"], function (done) {
@@ -148,16 +151,12 @@ gulp.task("src:buildRelease", ["src:testsRelease"], function () {
         .pipe(gulp.dest("wwwroot/scripts"));
 });
 
-gulp.task("src:build", ["src:buildRelease"]);
+gulp.task("_lib", ["lib:build"]);
 
-/*** aspnet ***/
+gulp.task("_debug", ["src:buildDebug"]);
 
-gulp.task("aspnet:build", function (callback) {
-    dotnet.build({
-        cwd: "./"
-    }, callback);
-});
+gulp.task("_release", ["src:buildRelease"]);
 
-gulp.task("build", ["src:build", "aspnet:build"]);
+gulp.task("_build", ["_debug", "_release"]);
 
-gulp.task("default", ["build"]);
+gulp.task("default", ["_build"]);

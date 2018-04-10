@@ -5,9 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Scripts\Tests\debug\**" />
+    <Compile Remove="Scripts\Tests\release\**" />
     <Compile Remove="wwwroot\js\**" />
+    <Content Remove="Scripts\Tests\debug\**" />
+    <Content Remove="Scripts\Tests\release\**" />
     <Content Remove="wwwroot\js\**" />
+    <EmbeddedResource Remove="Scripts\Tests\debug\**" />
+    <EmbeddedResource Remove="Scripts\Tests\release\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
+    <None Remove="Scripts\Tests\debug\**" />
+    <None Remove="Scripts\Tests\release\**" />
     <None Remove="wwwroot\js\**" />
   </ItemGroup>
 
@@ -22,6 +30,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Serilog" Version="2.6.0" />
@@ -43,6 +52,11 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RobyMes.Propellerhead.Common\RobyMes.Propellerhead.Common.csproj" />
+    <ProjectReference Include="..\RobyMes.Propellerhead.Data\RobyMes.Propellerhead.Data.csproj" />
   </ItemGroup>
 
 </Project>
