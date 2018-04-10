@@ -4,6 +4,12 @@ namespace RobyMes.Propellerhead.Common.Data.Events
 {
     public class CustomerCreatedEvent : BaseEvent
     {
+        public string CustomerId
+        {
+            get;
+            protected set;
+        }
+
         public string Name
         {
             get;
@@ -22,8 +28,9 @@ namespace RobyMes.Propellerhead.Common.Data.Events
             protected set;
         }
 
-        public CustomerCreatedEvent(string name, DateTime creationDate, CustomerStatus status)
+        public CustomerCreatedEvent(string id, string name, DateTime creationDate, CustomerStatus status)
         {
+            this.CustomerId = id;
             this.Name = name;
             this.CreationDate = creationDate;
             this.Status = status;

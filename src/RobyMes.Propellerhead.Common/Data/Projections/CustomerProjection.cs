@@ -1,5 +1,6 @@
 ﻿using RobyMes.Propellerhead.Common.Data.Events;
 using System;
+using System.Collections.Generic;
 
 namespace RobyMes.Propellerhead.Common.Data.Projections
 {
@@ -29,17 +30,33 @@ namespace RobyMes.Propellerhead.Common.Data.Projections
             set;
         }
 
+        public IList<string> Notes
+        {
+            get;
+            set;
+        }
+
         public CustomerProjection()
         {
-
+            this.Notes = new List<string>();
         }
 
         public void Apply(CustomerCreatedEvent evt)
         {
-            this.CustomerId = Guid.NewGuid().ToString("N").ToUpperInvariant();
+            this.CustomerId = evt.CustomerId;
             this.CreationDate = evt.CreationDate;
             this.Name = evt.Name;
             this.Status = evt.Status;
+        }
+
+        public void Apply(CustomerStatusUpdatedEvent evt)
+        {
+            this.Status = evt.Status;
+        }
+
+        public void Apply(CustomerNoteAddedEvent evt)
+        {
+            this.Notes.Add(evt.Note);
         }
     }
 }

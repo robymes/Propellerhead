@@ -67,7 +67,9 @@ namespace RobyMes.Propellerhead.Data.Marten
                 }
                 ds.Events.AddEventTypes(new List<Type>()
                     {
-                        typeof(CustomerCreatedEvent)
+                        typeof(CustomerCreatedEvent),
+                        typeof(CustomerStatusUpdatedEvent),
+                        typeof(CustomerNoteAddedEvent)
                     });
                 ds.Events.AggregateFor<CustomerStream>();
                 ds.Events.InlineProjections.AggregateStreamsWith<CustomerProjection>();

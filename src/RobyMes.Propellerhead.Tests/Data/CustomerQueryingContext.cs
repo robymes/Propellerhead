@@ -1,5 +1,4 @@
-﻿using LightBDD.XUnit2;
-using Moq;
+﻿using Moq;
 using RobyMes.Propellerhead.Common.Configuration;
 using RobyMes.Propellerhead.Common.Data;
 using RobyMes.Propellerhead.Data.Marten;
@@ -9,19 +8,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RobyMes.Propellerhead.Tests.Web
+namespace RobyMes.Propellerhead.Tests.Data
 {
-    public sealed class CustomerQueryingContext : IDisposable
+    public class CustomerQueryingContext : IDisposable
     {
-        private const string CONNECTION_STRING = "host=localhost;database=event_store;password=robymes.ptt;username=postgres;";
-        private IRepository repository;
-        private IList<Customer> customerList;
+        protected const string CONNECTION_STRING = "host=localhost;database=event_store;password=robymes.ptt;username=postgres;";
+        protected IRepository repository;
+        protected IList<Customer> customerList;
 
         public async Task Customer_repository_is_available()
         {
             var configurationProviderMock = new Mock<IConfigurationProvider>();
             configurationProviderMock.SetupProperty(cf => cf.DocumentStoreConnectionString, CONNECTION_STRING);
-            configurationProviderMock.SetupProperty(cf => cf.DocumentStoreSchemaName, 
+            configurationProviderMock.SetupProperty(cf => cf.DocumentStoreSchemaName,
                 $"{this.GetType().Name}_{DateTime.Now.ToString("yyMMddHHmmssfff")}");
             this.repository = new MartenRepository(configurationProviderMock.Object);
             this.repository.ShouldNotBeNull();
@@ -33,12 +32,12 @@ namespace RobyMes.Propellerhead.Tests.Web
             foreach (var name in names)
             {
                 await this.repository.CreateCustomer(name, CustomerStatus.NonActive);
-            }            
+            }
         }
 
         public async Task Customers_are_retrieved(CustomerListQueryParameters queryParameters)
         {
-            this.customerList = await this.repository.GetCustomers( queryParameters);           
+            this.customerList = await this.repository.GetCustomers(queryParameters);           
         }
 
         public async Task Customers_are_retrieved_ordered_by_name(CustomerListQueryParameters queryParameters, bool ascending)
@@ -52,7 +51,7 @@ namespace RobyMes.Propellerhead.Tests.Web
         }
 
         public async Task Customer_are_retrieved_by_id(int customerIndex)
-        {
+        {            
             var customer = await this.repository.GetCustomerById(this.customerList[customerIndex].Id);
             this.customerList = new List<Customer>();
             if (customer != null)
@@ -86,10 +85,16 @@ namespace RobyMes.Propellerhead.Tests.Web
 
         public void Dispose()
         {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool managed)
+        {
             if (this.repository != null)
             {
                 this.repository.Dispose();
-            }            
+            }
         }
     }
 }

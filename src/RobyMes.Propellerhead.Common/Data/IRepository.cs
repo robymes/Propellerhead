@@ -15,5 +15,9 @@ namespace RobyMes.Propellerhead.Common.Data
         Task<Customer> GetCustomerById(string id);
 
         Task CreateCustomer(string name, CustomerStatus status);
+
+        Task UpdateCustomerStatus(string id, CustomerStatus status);
+
+        Task AddCustomerNote(string id, string note);
     }
 }

@@ -31,7 +31,8 @@ namespace RobyMes.Propellerhead.Data.Marten
                     CreationDate = c.CreationDate,
                     Id = c.CustomerId,
                     Name = c.Name,
-                    Status = c.Status.ToString()
+                    Status = c.Status.ToString(),
+                    Notes = c.Notes
                 })
                 .ToList();
         }
@@ -108,8 +109,23 @@ namespace RobyMes.Propellerhead.Data.Marten
 
         public async Task CreateCustomer(string name, CustomerStatus status)
         {
-            var customerCreatedEvent = new CustomerCreatedEvent(name, DateTime.Now, status);
-            this.session.Events.StartStream<CustomerProjection>(Guid.NewGuid(), customerCreatedEvent);
+            var customerId = Guid.NewGuid();
+            var customerCreatedEvent = new CustomerCreatedEvent(customerId.ToString("N").ToUpperInvariant(), name, DateTime.Now, status);
+            this.session.Events.StartStream<CustomerProjection>(customerId, customerCreatedEvent);
+            await this.session.SaveChangesAsync();
+        }
+
+        public async Task UpdateCustomerStatus(string id, CustomerStatus status)
+        {
+            var customerId = Guid.ParseExact(id, "N");
+            this.session.Events.Append(customerId, new CustomerStatusUpdatedEvent(id, status));
+            await this.session.SaveChangesAsync();
+        }
+
+        public async Task AddCustomerNote(string id, string note)
+        {
+            var customerId = Guid.ParseExact(id, "N");
+            this.session.Events.Append(customerId, new CustomerNoteAddedEvent(id, note));
             await this.session.SaveChangesAsync();
         }
 

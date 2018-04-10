@@ -6,9 +6,7 @@ using RobyMes.Propellerhead.Common.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-[assembly: LightBddScope]
-
-namespace RobyMes.Propellerhead.Tests.Web
+namespace RobyMes.Propellerhead.Tests.Data
 {
     [FeatureDescription(
     @"In order to query for customers
@@ -34,8 +32,8 @@ namespace RobyMes.Propellerhead.Tests.Web
                 and => and.Customers_are_created(customerNames),
                 when => when.Customers_are_retrieved(queryParameters),
                 then => then.Customer_list_contains_items(2),
-                then => then.Customer_list_contains_items(customerNames[0], CustomerStatus.NonActive, 1),
-                then => then.Customer_list_contains_items(customerNames[1], CustomerStatus.NonActive, 1)
+                and => and.Customer_list_contains_items(customerNames[0], CustomerStatus.NonActive, 1),
+                and => and.Customer_list_contains_items(customerNames[1], CustomerStatus.NonActive, 1)
             );
         }
 
@@ -58,9 +56,9 @@ namespace RobyMes.Propellerhead.Tests.Web
                 and => and.Customers_are_created(customerNames),
                 when => when.Customers_are_retrieved(queryParameters),
                 then => then.Customer_list_contains_items(3),
-                then => then.Customer_list_contains_items(customerNames[customerCount - 3], CustomerStatus.NonActive, 1),
-                then => then.Customer_list_contains_items(customerNames[customerCount - 2], CustomerStatus.NonActive, 1),
-                then => then.Customer_list_contains_items(customerNames[customerCount - 1], CustomerStatus.NonActive, 1)
+                and => and.Customer_list_contains_items(customerNames[customerCount - 3], CustomerStatus.NonActive, 1),
+                and => and.Customer_list_contains_items(customerNames[customerCount - 2], CustomerStatus.NonActive, 1),
+                and => and.Customer_list_contains_items(customerNames[customerCount - 1], CustomerStatus.NonActive, 1)
             );
         }
 
@@ -83,8 +81,8 @@ namespace RobyMes.Propellerhead.Tests.Web
                 and => and.Customers_are_created(customerNames),
                 when => when.Customers_are_retrieved_ordered_by_name(queryParameters, false),
                 then => then.Customer_list_contains_items(10),
-                then => then.Customer_list_contains_item(0, customerNames[customerCount - 1], CustomerStatus.NonActive),
-                then => then.Customer_list_contains_item(9, customerNames[customerCount - 10], CustomerStatus.NonActive)
+                and => and.Customer_list_contains_item(0, customerNames[customerCount - 1], CustomerStatus.NonActive),
+                and => and.Customer_list_contains_item(9, customerNames[customerCount - 10], CustomerStatus.NonActive)
             );
         }
 
@@ -107,8 +105,8 @@ namespace RobyMes.Propellerhead.Tests.Web
                 and => and.Customers_are_created(customerNames),
                 when => when.Customers_are_retrieved_ordered_by_creation_date(queryParameters, true),
                 then => then.Customer_list_contains_items(10),
-                then => then.Customer_list_contains_item(0, customerNames[0], CustomerStatus.NonActive),
-                then => then.Customer_list_contains_item(9, customerNames[9], CustomerStatus.NonActive)
+                and => and.Customer_list_contains_item(0, customerNames[0], CustomerStatus.NonActive),
+                and => and.Customer_list_contains_item(9, customerNames[9], CustomerStatus.NonActive)
             );
         }
 
@@ -132,8 +130,8 @@ namespace RobyMes.Propellerhead.Tests.Web
                 and => and.Customers_are_created(customerNames),
                 when => when.Customers_are_retrieved_ordered_by_name(queryParameters, false),
                 then => then.Customer_list_contains_items(12),
-                then => then.Customer_list_contains_item(0, customerNames[20], CustomerStatus.NonActive),
-                then => then.Customer_list_contains_item(11, customerNames[0], CustomerStatus.NonActive)
+                and => and.Customer_list_contains_item(0, customerNames[20], CustomerStatus.NonActive),
+                and => and.Customer_list_contains_item(11, customerNames[0], CustomerStatus.NonActive)
             );
         }
 
