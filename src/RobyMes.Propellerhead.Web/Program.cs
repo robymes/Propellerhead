@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using StructureMap.AspNetCore;
+using System.IO;
 
 namespace RobyMes.Propellerhead.Web
 {
@@ -12,7 +14,11 @@ namespace RobyMes.Propellerhead.Web
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(options => options.AddServerHeader = false)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
                 .UseStartup<Startup>()
+                .UseStructureMap()
                 .Build();
     }
 }
