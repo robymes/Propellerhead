@@ -22,7 +22,7 @@ namespace RobyMes.Propellerhead.Tests.Web
             var configurationProviderMock = new Mock<IConfigurationProvider>();
             configurationProviderMock.SetupProperty(cf => cf.DocumentStoreConnectionString, CONNECTION_STRING);
             configurationProviderMock.SetupProperty(cf => cf.DocumentStoreSchemaName, 
-                $"{this.GetType().Name}_{DateTime.Now.ToString("yyMMddHHmmss")}");
+                $"{this.GetType().Name}_{DateTime.Now.ToString("yyMMddHHmmssfff")}");
             this.repository = new MartenRepository(configurationProviderMock.Object);
             this.repository.ShouldNotBeNull();
             await Task.CompletedTask;
@@ -36,9 +36,19 @@ namespace RobyMes.Propellerhead.Tests.Web
             }            
         }
 
-        private async Task Customers_are_retrieved()
+        private async Task Customers_are_retrieved(CustomerListQueryParameters queryParameters)
         {
-            this.customerList = await this.repository.GetCustomers();           
+            this.customerList = await this.repository.GetCustomers( queryParameters);           
+        }
+
+        private async Task Customers_are_retrieved_ordered_by_name(CustomerListQueryParameters queryParameters, bool ascending)
+        {
+            this.customerList = await this.repository.GetCustomersOrderByName(queryParameters, ascending);
+        }
+
+        private async Task Customers_are_retrieved_ordered_by_creation_date(CustomerListQueryParameters queryParameters, bool ascending)
+        {
+            this.customerList = await this.repository.GetCustomersOrderByCreationDate(queryParameters, ascending);
         }
 
         private async Task Customer_list_contains_items(int count)
@@ -54,6 +64,13 @@ namespace RobyMes.Propellerhead.Tests.Web
                 .Where(c => (c.Name == name) && (c.Status == status.ToString()))
                 .ToList();
             customers.Count.ShouldBe(count);
+            await Task.CompletedTask;
+        }
+
+        private async Task Customer_list_contains_item(int index, string name, CustomerStatus status)
+        {
+            this.customerList[index].Name.ShouldBe(name);
+            this.customerList[index].Status.ShouldBe(status.ToString());
             await Task.CompletedTask;
         }
     }
