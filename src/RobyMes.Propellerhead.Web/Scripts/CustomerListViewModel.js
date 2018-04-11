@@ -6,39 +6,60 @@
             descOrdering = "glyphicon-chevron-down",
             loadItems,
             loadItemsOrderedByName,
-            loadItemsOrderedByCreationDate;
+            loadItemsOrderedByCreationDate,
+            defaultPageSize = 25;
 
         self.items = ko.observableArray([]);
         self.errorMessage = ko.observable("");
         self.nameOrdering = ko.observable(noOrdering);
         self.creationdateOrdering = ko.observable(noOrdering);
+        self.statusFilters = ko.observableArray([
+            "Prospective",
+            "Current",
+            "NonActive"
+        ]);
+        self.statusFilter = ko.observable();
+
+        self.statusFilter.subscribe(function (filter) {
+            if (self.nameOrdering() === ascOrdering) {
+                loadItemsOrderedByName(defaultPageSize, 0, true);
+            } else if (self.nameOrdering() === descOrdering) {
+                loadItemsOrderedByName(defaultPageSize, 0, false);
+            } else if (self.creationdateOrdering() === ascOrdering) {
+                loadItemsOrderedByCreationDate(defaultPageSize, 0, true);
+            } else if (self.creationdateOrdering() === descOrdering) {
+                loadItemsOrderedByCreationDate(defaultPageSize, 0, false);
+            } else {
+                loadItems(defaultPageSize, 0);
+            }
+        });
 
         self.orderByName = function () {
             self.creationdateOrdering(noOrdering);
-            if (self.nameOrdering() == ascOrdering) {
+            if (self.nameOrdering() === ascOrdering) {
                 self.nameOrdering(descOrdering);
-                loadItemsOrderedByName(10, 0, false);
+                loadItemsOrderedByName(defaultPageSize, 0, false);
             } else {
                 self.nameOrdering(ascOrdering);
-                loadItemsOrderedByName(10, 0, true);
+                loadItemsOrderedByName(defaultPageSize, 0, true);
             }
         };
 
         self.orderByCreationDate = function () {
             self.nameOrdering(noOrdering);
-            if (self.creationdateOrdering() == ascOrdering) {
+            if (self.creationdateOrdering() === ascOrdering) {
                 self.creationdateOrdering(descOrdering);
-                loadItemsOrderedByCreationDate(10, 0, false);
+                loadItemsOrderedByCreationDate(defaultPageSize, 0, false);
             } else {
                 self.creationdateOrdering(ascOrdering);
-                loadItemsOrderedByCreationDate(10, 0, true);
+                loadItemsOrderedByCreationDate(defaultPageSize, 0, true);
             }
         };
 
         loadItems = function (pageSize, pageindex) {
             self.nameOrdering(noOrdering);
             self.creationdateOrdering(noOrdering);
-            apiService.getCustomers(pageSize, pageindex)
+            apiService.getCustomers(pageSize, pageindex, self.statusFilter())
                 .done(function (items) {
                     self.errorMessage("");
                     self.items.removeAll();
@@ -50,7 +71,7 @@
         };
 
         loadItemsOrderedByName = function (pageSize, pageindex, ascending) {
-            apiService.getCustomersOrderByName(pageSize, pageindex, ascending)
+            apiService.getCustomersOrderByName(pageSize, pageindex, ascending, self.statusFilter())
                 .done(function (items) {
                     self.errorMessage("");
                     self.items.removeAll();
@@ -62,7 +83,7 @@
         };
 
         loadItemsOrderedByCreationDate = function (pageSize, pageindex, ascending) {
-            apiService.getCustomersOrderByCreationDate(pageSize, pageindex, ascending)
+            apiService.getCustomersOrderByCreationDate(pageSize, pageindex, ascending, self.statusFilter())
                 .done(function (items) {
                     self.errorMessage("");
                     self.items.removeAll();
@@ -76,7 +97,7 @@
         applicationBus.newCustomerAdded
             .onValue(function () {
                 self.errorMessage("");
-                loadItems(10, 0);
+                loadItems(defaultPageSize, 0);
             });
 
         applicationBus.newCustomerAdded
@@ -88,7 +109,7 @@
             self.errorMessage("");
             self.nameOrdering(noOrdering);
             self.creationdateOrdering(noOrdering);
-            loadItems(10, 0);
+            loadItems(defaultPageSize, 0);
         };
     };
     ptt.CustomerListViewModel = function (apiService, applicationBus) {

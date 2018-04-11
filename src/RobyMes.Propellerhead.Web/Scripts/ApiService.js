@@ -10,39 +10,39 @@
             updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus",
             addCustomerNoteServiceUrl = route + "AddCustomerNote";
 
-        self.getCustomers = function (pageSize, pageIndex) {
+        self.getCustomers = function (pageSize, pageIndex, statusFilter) {
             var request = {
                 pageSize: pageSize,
                 pageIndex: pageIndex,
                 nameFilter: null,
                 creatioDateFilter: null,
-                customerStatusFilter: null
+                customerStatusFilter: statusFilter
             };
             return ptt.postJson(getCustomersServiceUrl, request, false);
         };
 
-        self.getCustomersOrderByName = function (pageSize, pageIndex, ascending) {
+        self.getCustomersOrderByName = function (pageSize, pageIndex, ascending, statusFilter) {
             var request = {
                 Query: {
                     pageSize: pageSize,
                     pageIndex: pageIndex,
                     nameFilter: null,
                     creatioDateFilter: null,
-                    customerStatusFilter: null
+                    customerStatusFilter: statusFilter
                 },
                 ascending: ascending
             };
             return ptt.postJson(getCustomersOrderByNameServiceUrl, request, false);
         };
 
-        self.getCustomersOrderByCreationDate = function (pageSize, pageIndex, ascending) {
+        self.getCustomersOrderByCreationDate = function (pageSize, pageIndex, ascending, statusFilter) {
             var request = {
                 Query: {
                     pageSize: pageSize,
                     pageIndex: pageIndex,
                     nameFilter: null,
                     creatioDateFilter: null,
-                    customerStatusFilter: null
+                    customerStatusFilter: statusFilter
                 },
                 ascending: ascending
             };
