@@ -3,6 +3,7 @@
         var self = this;
 
         self.newCustomerAdded = new Bacon.Bus();
+        self.newNoteAdded = new Bacon.Bus();
     };
     ptt.ApplicationBus = function () {
         return new ctor();

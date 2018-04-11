@@ -30,15 +30,16 @@ this.ptt = (function (ptt) {
             getCustomersOrderByCreationDateServiceUrl = route + "GetCustomersOrderByCreationDate",
             getCustomerByIdServiceUrl = route + "GetCustomerById",
             newCustomerServiceUrl = route + "NewCustomer",
-            updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus";
+            updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus",
+            addCustomerNoteServiceUrl = route + "AddCustomerNote";
 
         self.getCustomers = function (pageSize, pageIndex) {
             var request = {
-                PageSize: pageSize,
-                PageIndex: pageIndex,
-                NameFilter: null,
-                CreatioDateFilter: null,
-                CustomerStatusFilter: null
+                pageSize: pageSize,
+                pageIndex: pageIndex,
+                nameFilter: null,
+                creatioDateFilter: null,
+                customerStatusFilter: null
             };
             return ptt.postJson(getCustomersServiceUrl, request, false);
         };
@@ -46,13 +47,13 @@ this.ptt = (function (ptt) {
         self.getCustomersOrderByName = function (pageSize, pageIndex, ascending) {
             var request = {
                 Query: {
-                    PageSize: pageSize,
-                    PageIndex: pageIndex,
-                    NameFilter: null,
-                    CreatioDateFilter: null,
-                    CustomerStatusFilter: null
+                    pageSize: pageSize,
+                    pageIndex: pageIndex,
+                    nameFilter: null,
+                    creatioDateFilter: null,
+                    customerStatusFilter: null
                 },
-                Ascending: ascending
+                ascending: ascending
             };
             return ptt.postJson(getCustomersOrderByNameServiceUrl, request, false);
         };
@@ -60,13 +61,13 @@ this.ptt = (function (ptt) {
         self.getCustomersOrderByCreationDate = function (pageSize, pageIndex, ascending) {
             var request = {
                 Query: {
-                    PageSize: pageSize,
-                    PageIndex: pageIndex,
-                    NameFilter: null,
-                    CreatioDateFilter: null,
-                    CustomerStatusFilter: null
+                    pageSize: pageSize,
+                    pageIndex: pageIndex,
+                    nameFilter: null,
+                    creatioDateFilter: null,
+                    customerStatusFilter: null
                 },
-                Ascending: ascending
+                ascending: ascending
             };
             return ptt.postJson(getCustomersOrderByCreationDateServiceUrl, request, false);
         };
@@ -92,6 +93,14 @@ this.ptt = (function (ptt) {
             };
             return ptt.postJson(updateCustomerStatusServiceUrl, request, false);
         };
+
+        self.addCustomerNote = function (id, note) {
+            var request = {
+                id: id,
+                note: note
+            };
+            return ptt.postJson(addCustomerNoteServiceUrl, request, false);
+        };
     };
     ptt.ApiService = function () {
         return new ctor();
@@ -103,6 +112,7 @@ this.ptt = (function (ptt) {
         var self = this;
 
         self.newCustomerAdded = new Bacon.Bus();
+        self.newNoteAdded = new Bacon.Bus();
     };
     ptt.ApplicationBus = function () {
         return new ctor();
@@ -151,6 +161,7 @@ this.ptt = (function (ptt) {
             self.creationdateOrdering(noOrdering);
             apiService.getCustomers(pageSize, pageindex)
                 .done(function (items) {
+                    self.errorMessage("");
                     self.items.removeAll();
                     self.items(items);
                 })
@@ -162,6 +173,7 @@ this.ptt = (function (ptt) {
         loadItemsOrderedByName = function (pageSize, pageindex, ascending) {
             apiService.getCustomersOrderByName(pageSize, pageindex, ascending)
                 .done(function (items) {
+                    self.errorMessage("");
                     self.items.removeAll();
                     self.items(items);
                 })
@@ -173,6 +185,7 @@ this.ptt = (function (ptt) {
         loadItemsOrderedByCreationDate = function (pageSize, pageindex, ascending) {
             apiService.getCustomersOrderByCreationDate(pageSize, pageindex, ascending)
                 .done(function (items) {
+                    self.errorMessage("");
                     self.items.removeAll();
                     self.items(items);
                 })
@@ -183,6 +196,7 @@ this.ptt = (function (ptt) {
 
         applicationBus.newCustomerAdded
             .onValue(function () {
+                self.errorMessage("");
                 loadItems(10, 0);
             });
 
@@ -244,6 +258,7 @@ this.ptt = (function (ptt) {
             "Current",
             "NonActive"
         ]);
+        self.notes = ko.observableArray([]);
 
         self.status.subscribe(function (newStatus) {
             if (itemLoaded == true) {
@@ -266,17 +281,57 @@ this.ptt = (function (ptt) {
                     self.name(item.name);
                     self.creationDate(item.creationDate);
                     self.status(item.status);
+                    self.notes.removeAll();
+                    self.notes(item.notes);
                 })
                 .fail(function (error) {
                     self.errorMessage("An error has occurred loading customer");
                 });
         };
 
+        applicationBus.newNoteAdded
+            .onValue(function () {
+                self.errorMessage("");
+                itemLoaded = false;
+                loadItem(customerId);
+            });
+
+        applicationBus.newNoteAdded
+            .onError(function (error) {
+                self.errorMessage(error.message);
+            });
+
         self.init = function () {
             loadItem(customerId);
         };
     };
     ptt.CustomerViewModel = function (apiService, applicationBus, customerId) {
+        return new ctor(apiService, applicationBus, customerId);
+    };
+    return ptt;
+}(this.ptt || {}));
+this.ptt = (function (ptt) {
+    var ctor = function (apiService, applicationBus, customerId) {
+        var self = this;
+
+        self.note = ko.observable("");
+
+        self.canInsertNewNote = ko.computed(function () {
+            return self.note() && true;
+        }, self);
+
+        self.insertNewNote = function () {
+            apiService.addCustomerNote(customerId, self.note())
+                .done(function (result) {
+                    self.note("");
+                    applicationBus.newNoteAdded.push(true);
+                })
+                .fail(function () {
+                    applicationBus.newNoteAdded.error(new Bacon.Error("Error inserting a new Note"));
+                });
+        };
+    };
+    ptt.NewNoteViewModel = function (apiService, applicationBus, customerId) {
         return new ctor(apiService, applicationBus, customerId);
     };
     return ptt;
@@ -302,7 +357,8 @@ this.ptt = (function (ptt) {
         var apiService = ptt.ApiService(),
             applicationBus = ptt.ApplicationBus(),
             viewModel = {
-                customer: ptt.CustomerViewModel(apiService, applicationBus, customerId)
+                customer: ptt.CustomerViewModel(apiService, applicationBus, customerId),
+                newNote: ptt.NewNoteViewModel(apiService, applicationBus, customerId),
             };
         ko.applyBindings(viewModel);
         viewModel.customer.init();

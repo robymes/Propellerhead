@@ -67,6 +67,13 @@ namespace RobyMes.Propellerhead.Web.Controllers
         {
             await this.repository.UpdateCustomerStatus(request.Id, request.Status);
             return this.Ok();
-        }        
+        }
+
+        [HttpPost("AddCustomerNote")]
+        public async Task<IActionResult> AddCustomerNote([FromBody] AddCustomerNoteRequest request)
+        {
+            await this.repository.AddCustomerNote(request.Id, request.Note);
+            return this.Ok();
+        }
     }
 }

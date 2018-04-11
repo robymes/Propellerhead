@@ -13,6 +13,7 @@
             "Current",
             "NonActive"
         ]);
+        self.notes = ko.observableArray([]);
 
         self.status.subscribe(function (newStatus) {
             if (itemLoaded == true) {
@@ -35,11 +36,25 @@
                     self.name(item.name);
                     self.creationDate(item.creationDate);
                     self.status(item.status);
+                    self.notes.removeAll();
+                    self.notes(item.notes);
                 })
                 .fail(function (error) {
                     self.errorMessage("An error has occurred loading customer");
                 });
         };
+
+        applicationBus.newNoteAdded
+            .onValue(function () {
+                self.errorMessage("");
+                itemLoaded = false;
+                loadItem(customerId);
+            });
+
+        applicationBus.newNoteAdded
+            .onError(function (error) {
+                self.errorMessage(error.message);
+            });
 
         self.init = function () {
             loadItem(customerId);

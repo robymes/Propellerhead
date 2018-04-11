@@ -7,15 +7,16 @@
             getCustomersOrderByCreationDateServiceUrl = route + "GetCustomersOrderByCreationDate",
             getCustomerByIdServiceUrl = route + "GetCustomerById",
             newCustomerServiceUrl = route + "NewCustomer",
-            updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus";
+            updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus",
+            addCustomerNoteServiceUrl = route + "AddCustomerNote";
 
         self.getCustomers = function (pageSize, pageIndex) {
             var request = {
-                PageSize: pageSize,
-                PageIndex: pageIndex,
-                NameFilter: null,
-                CreatioDateFilter: null,
-                CustomerStatusFilter: null
+                pageSize: pageSize,
+                pageIndex: pageIndex,
+                nameFilter: null,
+                creatioDateFilter: null,
+                customerStatusFilter: null
             };
             return ptt.postJson(getCustomersServiceUrl, request, false);
         };
@@ -23,13 +24,13 @@
         self.getCustomersOrderByName = function (pageSize, pageIndex, ascending) {
             var request = {
                 Query: {
-                    PageSize: pageSize,
-                    PageIndex: pageIndex,
-                    NameFilter: null,
-                    CreatioDateFilter: null,
-                    CustomerStatusFilter: null
+                    pageSize: pageSize,
+                    pageIndex: pageIndex,
+                    nameFilter: null,
+                    creatioDateFilter: null,
+                    customerStatusFilter: null
                 },
-                Ascending: ascending
+                ascending: ascending
             };
             return ptt.postJson(getCustomersOrderByNameServiceUrl, request, false);
         };
@@ -37,13 +38,13 @@
         self.getCustomersOrderByCreationDate = function (pageSize, pageIndex, ascending) {
             var request = {
                 Query: {
-                    PageSize: pageSize,
-                    PageIndex: pageIndex,
-                    NameFilter: null,
-                    CreatioDateFilter: null,
-                    CustomerStatusFilter: null
+                    pageSize: pageSize,
+                    pageIndex: pageIndex,
+                    nameFilter: null,
+                    creatioDateFilter: null,
+                    customerStatusFilter: null
                 },
-                Ascending: ascending
+                ascending: ascending
             };
             return ptt.postJson(getCustomersOrderByCreationDateServiceUrl, request, false);
         };
@@ -68,6 +69,14 @@
                 status: status
             };
             return ptt.postJson(updateCustomerStatusServiceUrl, request, false);
+        };
+
+        self.addCustomerNote = function (id, note) {
+            var request = {
+                id: id,
+                note: note
+            };
+            return ptt.postJson(addCustomerNoteServiceUrl, request, false);
         };
     };
     ptt.ApiService = function () {

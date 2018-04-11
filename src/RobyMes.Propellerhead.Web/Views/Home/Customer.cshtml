@@ -14,6 +14,22 @@
 
 <input type="hidden" id="customer-id" value="@ViewData["CustomerId"]" />
 <div class="row show">
+	<div class="col-md-12" data-bind="with: newNote">
+		<div class="panel panel-primary">
+			<div class="panel-heading">New Note</div>
+			<div class="panel-body">
+				<div role="form" class="form-inline">
+					<div class="form-group">
+						<label>Note</label>
+						<input type="text" class="form-control" placeholder="Enter Note Text" data-bind="textInput: note" style="width: 750px;">
+					</div>                    
+					<button type="submit" class="btn btn-default" data-bind="enable: canInsertNewNote, click: insertNewNote">Add Note</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row show">
 	<div class="col-md-12" data-bind="with: customer">
 		<div class="alert alert-danger" role="alert" data-bind="css: { hidden: errorMessage() === ''}">
 			<span data-bind="text: errorMessage"></span>
@@ -33,9 +49,19 @@
 					<tr>
 						<td width="30%"><strong>Status</strong></td>
 						<td>
-							<select data-bind="options: statusList, value: status"></select>
+							<select style="width: 200px;" class="form-control" data-bind="options: statusList, value: status"></select>
 						</td>												
 					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="panel panel-default">
+            <div class="panel-heading">Notes</div>
+			<table class="table table-striped">				
+				<tbody data-bind="foreach: notes">
+					<tr>
+						<td data-bind="text: $data"></td>
+					</tr>					
 				</tbody>
 			</table>
 		</div>

@@ -40,6 +40,7 @@
             self.creationdateOrdering(noOrdering);
             apiService.getCustomers(pageSize, pageindex)
                 .done(function (items) {
+                    self.errorMessage("");
                     self.items.removeAll();
                     self.items(items);
                 })
@@ -51,6 +52,7 @@
         loadItemsOrderedByName = function (pageSize, pageindex, ascending) {
             apiService.getCustomersOrderByName(pageSize, pageindex, ascending)
                 .done(function (items) {
+                    self.errorMessage("");
                     self.items.removeAll();
                     self.items(items);
                 })
@@ -62,6 +64,7 @@
         loadItemsOrderedByCreationDate = function (pageSize, pageindex, ascending) {
             apiService.getCustomersOrderByCreationDate(pageSize, pageindex, ascending)
                 .done(function (items) {
+                    self.errorMessage("");
                     self.items.removeAll();
                     self.items(items);
                 })
@@ -72,6 +75,7 @@
 
         applicationBus.newCustomerAdded
             .onValue(function () {
+                self.errorMessage("");
                 loadItems(10, 0);
             });
 
