@@ -30,7 +30,7 @@ namespace RobyMes.Propellerhead.Common.Data.Projections
             set;
         }
 
-        public IList<string> Notes
+        public IList<Note> Notes
         {
             get;
             set;
@@ -38,7 +38,7 @@ namespace RobyMes.Propellerhead.Common.Data.Projections
 
         public CustomerProjection()
         {
-            this.Notes = new List<string>();
+            this.Notes = new List<Note>();
         }
 
         public void Apply(CustomerCreatedEvent evt)
@@ -56,7 +56,11 @@ namespace RobyMes.Propellerhead.Common.Data.Projections
 
         public void Apply(CustomerNoteAddedEvent evt)
         {
-            this.Notes.Add(evt.Note);
+            this.Notes.Add(new Note()
+            {
+                Text = evt.Note,
+                Timestamp = evt.Timestamp
+            });
         }
     }
 }

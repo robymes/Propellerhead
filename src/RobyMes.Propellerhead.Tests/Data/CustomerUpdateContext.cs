@@ -1,5 +1,6 @@
 ﻿using RobyMes.Propellerhead.Common.Data;
 using Shouldly;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RobyMes.Propellerhead.Tests.Data
@@ -47,7 +48,7 @@ namespace RobyMes.Propellerhead.Tests.Data
         {
             var customer = await this.repository.GetCustomerById(this.customerId);
             customer.ShouldNotBeNull();
-            customer.Notes.ShouldContain(note);
+            customer.Notes.Select(n => n.Text).ToList().ShouldContain(note);
         }
     }
 }

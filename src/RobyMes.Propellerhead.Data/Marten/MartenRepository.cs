@@ -32,11 +32,11 @@ namespace RobyMes.Propellerhead.Data.Marten
                     Id = c.CustomerId,
                     Name = c.Name,
                     Status = c.Status.ToString(),
-                    Notes = c.Notes
+                    Notes = c.Notes.OrderByDescending(n => n.Timestamp).ToList()
                 })
                 .ToList();
         }
-
+        
         private IQueryable<CustomerProjection> BuildFilters(IQueryable<CustomerProjection> query, CustomerListQueryParameters queryParameters)
         {
             if (string.IsNullOrEmpty(queryParameters.NameFilter) == false)
@@ -125,7 +125,7 @@ namespace RobyMes.Propellerhead.Data.Marten
         public async Task AddCustomerNote(string id, string note)
         {
             var customerId = Guid.ParseExact(id, "N");
-            this.session.Events.Append(customerId, new CustomerNoteAddedEvent(id, note));
+            this.session.Events.Append(customerId, new CustomerNoteAddedEvent(id, note, DateTime.Now));
             await this.session.SaveChangesAsync();
         }
 

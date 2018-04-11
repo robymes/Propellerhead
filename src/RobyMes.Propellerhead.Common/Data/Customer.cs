@@ -29,7 +29,7 @@ namespace RobyMes.Propellerhead.Common.Data
             set;
         }
 
-        public IList<string> Notes
+        public IList<Note> Notes
         {
             get;
             set;
@@ -37,7 +37,7 @@ namespace RobyMes.Propellerhead.Common.Data
 
         public Customer()
         {
-            this.Notes = new List<string>();
+            this.Notes = new List<Note>();
         }
     }
 }
