@@ -1,0 +1,17 @@
+version: "3"
+services:
+    eventStore:
+        image: postgres:9.6.3
+        ports:
+            - 5432:5432        
+        environment:
+            - POSTGRES_PASSWORD=robymes.ptt
+            - POSTGRES_DB=event_store
+    web:
+        image: robymes-propellerhead
+        ports: 
+            - 8080:80
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - DOC_STORE_CNN_STRING=host=eventStore;database=event_store;password=robymes.ptt;username=postgres;            
+            - DOC_STORE_SCHEMA_NAME=Customers
