@@ -1,30 +1,67 @@
 ﻿@{
-    ViewData["Title"] = "Customer List";
+	ViewData["Title"] = "Customer List";
+}
+
+@section Scripts
+{
+	<script type="text/javascript">
+		jQuery(document).ready(function () {
+			ptt.IndexApp();
+		});
+	</script>
 }
 
 <div class="row show">
-    <div class="col-md-12" data-bind="with: customerList">
-        <div class="panel panel-default">
+	<div class="col-md-12" data-bind="with: newCustomer">
+		<div class="panel panel-primary">
+			<div class="panel-heading">New Customer</div>
+			<div class="panel-body">
+				<div role="form" class="form-inline">
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" class="form-control" placeholder="Enter Customer Name" data-bind="textInput: name" style="width: 500px;">
+					</div>                    
+					<button type="submit" class="btn btn-default" data-bind="enable: canInsertNewItem, click: insertNewItem">Add Customer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row show">
+	<div class="col-md-12" data-bind="with: customerList">
+		<div class="alert alert-danger" role="alert" data-bind="css: { hidden: errorMessage() === ''}">
+			<span data-bind="text: errorMessage"></span>
+		</div>
+		<div class="panel panel-default">
             <div class="panel-heading">Customer List</div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Creation Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody data-bind="foreach: items">
-                    <tr>
-                        <td data-bind="text: id"></td>
-                        <td data-bind="text: name"></td>
-                        <td data-bind="text: creationDate"></td>
-                        <td data-bind="text: status"></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>
+							<button type="button" class="btn btn-default btn" data-bind="click: orderByName">
+								<span class="glyphicon" data-bind="css: nameOrdering" aria-hidden="true"></span> <strong>Name</strong>
+							</button>
+						</th>
+						<th>
+							<button type="button" class="btn btn-default btn" data-bind="click: orderByCreationDate">
+								<span class="glyphicon" data-bind="css: creationdateOrdering" aria-hidden="true"></span> <strong>Creation Date</strong>
+							</button>
+						</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: items">
+					<tr>
+						<td width="30%" data-bind="text: id"></td>
+						<td width="30%" data-bind="text: name"></td>
+						<td data-bind="text:  moment(creationDate).format('DD/MM/YYYY')"></td>
+						<td data-bind="text: status"></td>
+						<td><a type="button" data-bind="attr: { href: '/Home/Customer/' + id }" class="btn btn-xs">Detail</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div> 

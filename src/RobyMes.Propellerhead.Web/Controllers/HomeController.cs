@@ -11,6 +11,12 @@ namespace RobyMes.Propellerhead.Web.Controllers
             return View();
         }
 
+        public IActionResult Customer(string id)
+        {
+            this.ViewData["CustomerId"] = id;
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel
