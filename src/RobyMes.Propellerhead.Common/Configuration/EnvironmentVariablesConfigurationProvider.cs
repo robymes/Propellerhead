@@ -9,12 +9,20 @@ namespace RobyMes.Propellerhead.Common.Configuration
 
         public string DocumentStoreConnectionString
         {
-            get => Environment.GetEnvironmentVariable(DOC_STORE_CNN_STRING_KEY);
+            get => Environment.GetEnvironmentVariable(DOC_STORE_CNN_STRING_KEY);            
+            set
+            {
+                //NULL
+            }
         }
 
         public string DocumentStoreSchemaName
         {
             get => Environment.GetEnvironmentVariable(DOC_STORE_SCHEMA_NAME_KEY);
+            set
+            {
+                //NULL
+            }
         }
     }
 }

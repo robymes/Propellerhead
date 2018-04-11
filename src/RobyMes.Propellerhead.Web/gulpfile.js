@@ -27,11 +27,14 @@ var gulp = require("gulp"),
             "scripts/ApplicationBus.js",
             "scripts/CustomerListViewModel.js",
             "scripts/NewCustomerViewModel.js",
-            "scripts/IndexApp.js"
+            "scripts/CustomerViewModel.js",
+            "scripts/IndexApp.js",
+            "scripts/CustomerApp.js"
         ],
         testSrc: [
             "scripts/CustomerListViewModel.js",
-            "scripts/NewCustomerViewModel.js"
+            "scripts/NewCustomerViewModel.js",
+            "scripts/CustomerViewModel.js"
         ]
     };
 

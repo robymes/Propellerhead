@@ -48,6 +48,13 @@ namespace RobyMes.Propellerhead.Web.Controllers
             return this.Ok(result);
         }
 
+        [HttpPost("GetCustomerById")]
+        public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerByIdRequest request)
+        {
+            var result = await this.repository.GetCustomerById(request.Id);
+            return this.Ok(result);
+        }
+
         [HttpPost("NewCustomer")]
         public async Task<IActionResult> NewCustomer([FromBody] NewCustomerRequest request)
         {

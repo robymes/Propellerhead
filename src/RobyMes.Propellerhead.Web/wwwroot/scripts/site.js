@@ -28,6 +28,7 @@ this.ptt = (function (ptt) {
             getCustomersServiceUrl = route + "GetCustomers",
             getCustomersOrderByNameServiceUrl = route + "GetCustomersOrderByName",
             getCustomersOrderByCreationDateServiceUrl = route + "GetCustomersOrderByCreationDate",
+            getCustomerByIdServiceUrl = route + "GetCustomerById",
             newCustomerServiceUrl = route + "NewCustomer";
 
         self.getCustomers = function (pageSize, pageIndex) {
@@ -67,6 +68,13 @@ this.ptt = (function (ptt) {
                 Ascending: ascending
             };
             return ptt.postJson(getCustomersOrderByCreationDateServiceUrl, request, false);
+        };
+
+        self.getCustomerById = function (id) {
+            var request = {
+                Id: id
+            };
+            return ptt.postJson(getCustomerByIdServiceUrl, request, false);
         };
 
         self.newCustomer = function (name) {
@@ -213,6 +221,35 @@ this.ptt = (function (ptt) {
     return ptt;
 }(this.ptt || {}));
 this.ptt = (function (ptt) {
+    var ctor = function (apiService, applicationBus, customerId) {
+        var self = this,
+            loadItem;
+
+        self.name = ko.observable("");
+        self.errorMessage = ko.observable("");
+        self.creationDate = ko.observable("");
+
+        loadItem = function (customerId) {
+            apiService.getCustomerById(customerId)
+                .done(function (item) {
+                    self.name(item.name);
+                    self.creationDate(item.creationDate);
+                })
+                .fail(function (error) {
+                    self.errorMessage("An error has occurred loading customers");
+                });
+        };
+
+        self.init = function () {
+            loadItem(customerId);
+        };
+    };
+    ptt.CustomerViewModel = function (apiService, applicationBus, customerId) {
+        return new ctor(apiService, applicationBus, customerId);
+    };
+    return ptt;
+}(this.ptt || {}));
+this.ptt = (function (ptt) {
     var ctor = function () {
         var apiService = ptt.ApiService(),
             applicationBus = ptt.ApplicationBus(),
@@ -225,6 +262,21 @@ this.ptt = (function (ptt) {
     };
     ptt.IndexApp = function () {
         return new ctor();
+    };
+    return ptt;
+}(this.ptt || {}));
+this.ptt = (function (ptt) {
+    var ctor = function (customerId) {
+        var apiService = ptt.ApiService(),
+            applicationBus = ptt.ApplicationBus(),
+            viewModel = {
+                customer: ptt.CustomerViewModel(apiService, applicationBus, customerId)
+            };
+        ko.applyBindings(viewModel);
+        viewModel.customer.init();
+    };
+    ptt.CustomerApp = function (customerId) {
+        return new ctor(customerId);
     };
     return ptt;
 }(this.ptt || {}));

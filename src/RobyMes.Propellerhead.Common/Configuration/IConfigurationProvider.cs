@@ -5,11 +5,13 @@
         string DocumentStoreConnectionString
         {
             get;
+            set;
         }
 
         string DocumentStoreSchemaName
         {
             get;
+            set;
         }
     }
 }

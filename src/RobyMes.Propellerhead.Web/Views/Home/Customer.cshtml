@@ -1,0 +1,37 @@
+﻿@{
+	ViewData["Title"] = "Customer";
+}
+
+@section Scripts
+{
+	<script type="text/javascript">
+		jQuery(document).ready(function () {
+			var customerId = jQuery("#customer-id").val();
+			ptt.CustomerApp(customerId);
+		});
+	</script>
+}
+
+<input type="hidden" id="customer-id" value="@ViewData["CustomerId"]" />
+<div class="row show">
+	<div class="col-md-12" data-bind="with: customer">
+		<div class="alert alert-danger" role="alert" data-bind="css: { hidden: errorMessage() === ''}">
+			<span data-bind="text: errorMessage"></span>
+		</div>
+		<div class="panel panel-default">
+            <div class="panel-heading">Customer Detail</div>
+			<table class="table table-striped">				
+				<tbody>
+					<tr>
+						<td width="30%"><strong>Name</strong></td>
+						<td data-bind="text: name"></td>												
+					</tr>
+					<tr>
+						<td width="30%"><strong>Creation Date</strong></td>
+						<td data-bind="text: moment(creationDate()).format('DD/MM/YYYY')"></td>												
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div> 
