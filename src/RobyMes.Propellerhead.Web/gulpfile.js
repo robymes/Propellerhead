@@ -33,6 +33,8 @@ var gulp = require("gulp"),
             "scripts/CustomerApp.js"
         ],
         testSrc: [
+            "scripts/ApiService.js",
+            "scripts/ApplicationBus.js",
             "scripts/CustomerListViewModel.js",
             "scripts/NewCustomerViewModel.js",
             "scripts/CustomerViewModel.js",

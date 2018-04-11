@@ -1,10 +1,20 @@
-﻿describe("feature", function () {
+﻿describe("Given the home page", function () {
+    var apiService,
+        applicationBus,
+        customerListViewModel;
 
     beforeEach(function () {
-        //TODO:
+        apiService = ptt.ApiService();
+        spyOn(apiService, "getCustomers").and.returnValue([
+            "Item01",
+            "Item02",
+        ]);
+        applicationBus = ptt.ApplicationBus();
+        customerListViewModel = ptt.CustomerListViewModel(apiService, applicationBus);
     });
 
-    it("spec01", function () {
-        expect(0).toEqual(0);
+    it("before load it doesn't cotain any element", function () {
+        expect(customerListViewModel.items().length).toEqual(0);
     });
+
 });
