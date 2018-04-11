@@ -61,5 +61,12 @@ namespace RobyMes.Propellerhead.Web.Controllers
             await this.repository.CreateCustomer(request.Name, CustomerStatus.NonActive);
             return this.Ok();
         }
+
+        [HttpPost("UpdateCustomerStatus")]
+        public async Task<IActionResult> UpdateCustomerStatus([FromBody] UpdateCustomerStatusRequest request)
+        {
+            await this.repository.UpdateCustomerStatus(request.Id, request.Status);
+            return this.Ok();
+        }        
     }
 }

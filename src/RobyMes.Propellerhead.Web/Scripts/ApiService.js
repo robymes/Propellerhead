@@ -6,7 +6,8 @@
             getCustomersOrderByNameServiceUrl = route + "GetCustomersOrderByName",
             getCustomersOrderByCreationDateServiceUrl = route + "GetCustomersOrderByCreationDate",
             getCustomerByIdServiceUrl = route + "GetCustomerById",
-            newCustomerServiceUrl = route + "NewCustomer";
+            newCustomerServiceUrl = route + "NewCustomer",
+            updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus";
 
         self.getCustomers = function (pageSize, pageIndex) {
             var request = {
@@ -49,16 +50,24 @@
 
         self.getCustomerById = function (id) {
             var request = {
-                Id: id
+                id: id
             };
             return ptt.postJson(getCustomerByIdServiceUrl, request, false);
         };
 
         self.newCustomer = function (name) {
             var request = {
-                Name: name
+                name: name
             };
             return ptt.postJson(newCustomerServiceUrl, request, false);
+        };
+
+        self.updateCustomerStatus = function (id, status) {
+            var request = {
+                id: id,
+                status: status
+            };
+            return ptt.postJson(updateCustomerStatusServiceUrl, request, false);
         };
     };
     ptt.ApiService = function () {

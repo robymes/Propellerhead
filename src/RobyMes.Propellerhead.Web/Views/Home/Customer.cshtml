@@ -30,6 +30,12 @@
 						<td width="30%"><strong>Creation Date</strong></td>
 						<td data-bind="text: moment(creationDate()).format('DD/MM/YYYY')"></td>												
 					</tr>
+					<tr>
+						<td width="30%"><strong>Status</strong></td>
+						<td>
+							<select data-bind="options: statusList, value: status"></select>
+						</td>												
+					</tr>
 				</tbody>
 			</table>
 		</div>

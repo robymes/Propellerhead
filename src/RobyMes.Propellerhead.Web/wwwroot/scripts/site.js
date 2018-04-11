@@ -29,7 +29,8 @@ this.ptt = (function (ptt) {
             getCustomersOrderByNameServiceUrl = route + "GetCustomersOrderByName",
             getCustomersOrderByCreationDateServiceUrl = route + "GetCustomersOrderByCreationDate",
             getCustomerByIdServiceUrl = route + "GetCustomerById",
-            newCustomerServiceUrl = route + "NewCustomer";
+            newCustomerServiceUrl = route + "NewCustomer",
+            updateCustomerStatusServiceUrl = route + "UpdateCustomerStatus";
 
         self.getCustomers = function (pageSize, pageIndex) {
             var request = {
@@ -72,16 +73,24 @@ this.ptt = (function (ptt) {
 
         self.getCustomerById = function (id) {
             var request = {
-                Id: id
+                id: id
             };
             return ptt.postJson(getCustomerByIdServiceUrl, request, false);
         };
 
         self.newCustomer = function (name) {
             var request = {
-                Name: name
+                name: name
             };
             return ptt.postJson(newCustomerServiceUrl, request, false);
+        };
+
+        self.updateCustomerStatus = function (id, status) {
+            var request = {
+                id: id,
+                status: status
+            };
+            return ptt.postJson(updateCustomerStatusServiceUrl, request, false);
         };
     };
     ptt.ApiService = function () {
@@ -223,20 +232,43 @@ this.ptt = (function (ptt) {
 this.ptt = (function (ptt) {
     var ctor = function (apiService, applicationBus, customerId) {
         var self = this,
-            loadItem;
+            loadItem,
+            itemLoaded = false;
 
         self.name = ko.observable("");
         self.errorMessage = ko.observable("");
         self.creationDate = ko.observable("");
+        self.status = ko.observable("");
+        self.statusList = ko.observableArray([
+            "Prospective",
+            "Current",
+            "NonActive"
+        ]);
+
+        self.status.subscribe(function (newStatus) {
+            if (itemLoaded == true) {
+                apiService.updateCustomerStatus(customerId, newStatus)
+                    .done(function () {
+                        self.errorMessage("");
+                    })
+                    .fail(function (error) {
+                        self.errorMessage("An error has occurred updating status");
+                    });
+            } else {
+                itemLoaded = true;
+            }
+        });
 
         loadItem = function (customerId) {
             apiService.getCustomerById(customerId)
                 .done(function (item) {
+                    self.errorMessage("");
                     self.name(item.name);
                     self.creationDate(item.creationDate);
+                    self.status(item.status);
                 })
                 .fail(function (error) {
-                    self.errorMessage("An error has occurred loading customers");
+                    self.errorMessage("An error has occurred loading customer");
                 });
         };
 
